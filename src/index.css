@@ -1,0 +1,60 @@
+/* src/index.css */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: #080808;
+  color: #f0f0f0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  overflow: hidden; /* Keeps the whole page from bouncing */
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-layout {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  width: 100vw;
+}
+
+/* --- SIDEBAR (Fixed, Non-scrolling) --- */
+.sidebar {
+  width: 280px;
+  padding: 60px 50px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+/* --- MAIN CONTENT (Scrollable) --- */
+.main-content {
+  flex-grow: 1;
+  height: 100vh;       /* Fill height */
+  overflow-y: auto;    /* <--- THIS FIXES THE SCROLLING */
+  position: relative;
+  background-color: #080808;
+}
+
+/* --- LOGO --- */
+.logo-container { margin-bottom: 60px; }
+.logo-link { display: inline-block; cursor: pointer; }
+.sidebar-logo {
+  width: 100%; max-width: 140px; display: block;
+  filter: invert(1); /* Keep if your logo is black-on-transparent */
+  transition: opacity 0.2s ease;
+}
+.sidebar-logo:hover { opacity: 0.7; }
+
+/* --- NAV --- */
+.nav-list { list-style: none; }
+.nav-item { margin-bottom: 16px; }
+.nav-item a {
+  text-decoration: none; color: #666; font-size: 14px; font-weight: 500;
+  transition: color 0.2s ease;
+}
+.nav-item a:hover, .nav-item a.active-link { color: #fff; }
+
+/* Sub-menu */
+.nav-list .nav-list { margin-top: 12px; margin-bottom: 20px; padding-left: 0; }
+.nav-list .nav-list .nav-item { margin-bottom: 10px; }
+.nav-list .nav-list a { font-size: 13px; color: #444; }
+.nav-list .nav-list a:hover, .nav-list .nav-list a.active-link { color: #ccc; }
