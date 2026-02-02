@@ -23,7 +23,7 @@ const NavItem = ({ item, basePath = '' }) => {
         
         {/* Dropdown Menu */}
         {isHovered && (
-          <div className="absolute top-full right-0 bg-black border border-neutral-800 p-2 min-w-[200px] flex flex-col gap-1 shadow-2xl z-50">
+          <div className="absolute top-full left-0 bg-black border border-neutral-800 p-2 min-w-[200px] flex flex-col gap-1 shadow-2xl z-50">
             {item.sub.map((subItem) => (
               <NavItem key={subItem.path} item={subItem} basePath={fullPath} />
             ))}
@@ -51,24 +51,27 @@ const Sidebar = () => {
     <nav className="w-full h-24 bg-black border-b border-neutral-900 flex items-center justify-between px-8 md:px-12 sticky top-0 z-50">
       
       {/* Left: Logo & Name (gap-6) */}
-      <Link to="/" className="flex items-center gap-6 group">
+      <Link to="/" className="flex items-center gap-6 group shrink-0 whitespace-nowrap">
         <img 
           src={signatureImg} 
           alt="Signature" 
           className="h-14 w-auto invert opacity-80 group-hover:opacity-100 transition-opacity" 
         />
-        <span className="text-white text-3xl font-bold tracking-tighter uppercase hidden md:block">
-          Pavan Gadiraju
+        <span className="text-white text-3xl font-bold tracking-tighter hidden md:block">
+          PAVAN GADIRAJU
+        </span>
+        {/* Mobile-only shortened name if needed, or keep the full name visible: */}
+        <span className="text-white text-2xl font-bold tracking-tighter md:hidden">
+          PAVAN GADIRAJU
         </span>
       </Link>
 
-      {/* Right: Navigation (Increased to gap-6 to match left side) */}
-      <div className="flex items-center gap-6">
+      {/* Navigation Links */}
+      <div className="flex items-center gap-8">
         {navStructure.map((item) => (
           <NavItem key={item.path} item={item} />
         ))}
       </div>
-
     </nav>
   );
 };
