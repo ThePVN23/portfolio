@@ -1,42 +1,146 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Layout Container */
+.app-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #000;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Sidebar Styles */
+.sidebar {
+  width: 300px;
+  min-width: 300px;
+  height: 100%;
+  padding: 60px 40px;
+  overflow-y: auto;
+  border-right: 1px solid #1a1a1a;
+  display: flex;
+  flex-direction: column;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.logo-container {
+  margin-bottom: 60px;
 }
 
-.card {
-  padding: 2em;
+.logo-link img {
+  width: 140px;
+  filter: invert(1); /* Turns black signature white */
+  opacity: 0.9;
+  transition: opacity 0.2s;
 }
 
-.read-the-docs {
-  color: #888;
+.logo-link:hover img {
+  opacity: 0.6;
+}
+
+/* Navigation Links */
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.nav-item {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.nav-item a {
+  text-decoration: none;
+  color: #666;
+  transition: color 0.2s ease;
+  display: block;
+}
+
+.nav-item a:hover,
+.nav-item a.active-link {
+  color: #fff;
+}
+
+/* Dropdown / Submenu Styles */
+.nav-header {
+  color: #666;
+  transition: color 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-header:hover, 
+.nav-header.open {
+  color: #fff;
+}
+
+.sub-nav {
+  margin-top: 12px;
+  padding-left: 12px;
+  border-left: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sub-nav .nav-item {
+  font-size: 12px;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+  background-color: #000;
+}
+
+/* Animation Utilities */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Layout Container */
+.app-layout {
+  display: flex;
+  flex-direction: column; /* CHANGED TO COLUMN FOR TOP NAVBAR */
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #000;
+}
+
+/* Old Sidebar class can be removed or reset, as the new Navbar uses Tailwind. 
+   We just ensure main content takes up remaining space. */
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  width: 100%;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

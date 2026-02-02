@@ -6,23 +6,25 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        background: "#000000",
+        foreground: "#ffffff",
+      },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        // Main Text: Helvetica Neue / Arial
+        sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+        // Technical Headers: Courier New
+        mono: ['"Courier New"', 'Courier', 'Menlo', 'monospace'],
       },
       animation: {
-        'slide-up': 'slideUp 0.5s ease-out',
-        'fade-in': 'fadeIn 0.2s ease-out',
+        'fade-in': 'fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
       },
       keyframes: {
-        slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        }
-      }
+      },
     },
   },
   plugins: [],

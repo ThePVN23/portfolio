@@ -1,138 +1,135 @@
-// src/pages/Category.jsx
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { portfolioData } from '../data/portfolioData';
+import { portfolioData } from '../data'; 
 
-// --- INTERNAL COMPONENT: PROJECT CARD ---
-// Handles the display of a single project thumbnail (Image or Video)
 const ProjectCard = ({ item }) => {
   const navigate = useNavigate();
-
-  // 1. Determine Preview Asset
-  // Priority: First Still Image -> First Video -> Placeholder text
   let previewSrc = null;
   let isVideo = false;
 
-  if (item.stills && item.stills.length > 0) {
+  // 1. Thumbnail (preferred)
+  if (item.thumbnail) {
+    previewSrc = item.thumbnail;
+  } 
+  // 2. First Still
+  else if (item.stills?.length > 0) {
     previewSrc = item.stills[0];
-  } else if (item.videoGallery && item.videoGallery.length > 0) {
-    previewSrc = item.videoGallery[0].src;
+  } 
+  // 3. Direct Video Source
+  else if (item.videoSrc) {
+    previewSrc = item.videoSrc;
     isVideo = true;
   }
 
   return (
-    <div 
-      onClick={() => navigate(`/project/${item.slug}`)} 
-      className="group cursor-pointer flex flex-col gap-3"
-    >
-      {/* Thumbnail Container */}
-      <div className="relative aspect-[3/2] bg-neutral-900 overflow-hidden">
-        {previewSrc ? (
-          isVideo ? (
-            <video 
-              src={previewSrc} 
-              muted 
-              loop 
-              playsInline
-              onMouseOver={e => e.target.play()} 
-              onMouseOut={e => {
-                e.target.pause();
-                e.target.currentTime = 0;
-              }}
-              className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" 
-            />
-          ) : (
-            <img 
-              src={previewSrc} 
-              alt={item.title} 
-              className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" 
-            />
-          )
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-neutral-700 font-mono text-xs uppercase tracking-widest border border-neutral-800">
-            No Preview
-          </div>
+    <div onClick={() => navigate(`/project/${item.slug}`)} className="group cursor-pointer flex flex-col gap-3">
+      <div className="relative aspect-[16/9] bg-neutral-900 overflow-hidden border border-neutral-800 group-hover:border-neutral-500 transition-colors">
+        {previewSrc && (isVideo ? 
+          <video 
+            src={previewSrc} 
+            muted 
+            loop 
+            playsInline 
+            onMouseOver={e => e.target.play()} 
+            onMouseOut={e => {
+              e.target.pause();
+              e.target.currentTime = 0;
+            }} 
+            className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500" 
+          /> :
+          <img 
+            src={previewSrc} 
+            alt={item.title} 
+            className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500" 
+          />
         )}
       </div>
-
-      {/* Title & Info */}
-      <div>
-        <h3 className="text-white text-lg font-bold leading-none group-hover:text-red-500 transition-colors">
-          {item.title}
+      <div className="flex justify-between items-end">
+        <h3 className="text-sm font-medium text-white uppercase tracking-widest group-hover:text-blue-400 transition-colors">
+            {item.title}
         </h3>
-        {item.description && (
-          <p className="text-neutral-500 text-xs font-mono mt-2 line-clamp-1">
-            {item.description}
-          </p>
-        )}
+        {item.year && <span className="text-xs text-neutral-500 font-mono">{item.year}</span>}
       </div>
     </div>
   );
 };
 
-// --- INTERNAL COMPONENT: GRID ---
-const Grid = ({ items }) => {
-  if (!items || items.length === 0) return <div className="text-neutral-800 font-mono text-sm uppercase">[Coming Soon]</div>;
-  
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-      {items.map((item, index) => (
-        <ProjectCard key={index} item={item} />
-      ))}
-    </div>
-  );
-};
-
-// --- MAIN PAGE COMPONENT ---
 const Category = () => {
-  const { id } = useParams();
-  
-  // Find the specific category data (e.g., 'film' or 'photo')
-  const categoryData = portfolioData.find(c => c.id === id);
+  const { category, subcategory, nested } = useParams();
 
-  if (!categoryData) {
-    return <div className="p-12 text-white font-mono">Category not found.</div>;
+  const activeData = useMemo(() => {
+    if (!portfolioData) return null;
+
+    // 1. Find Top Category (e.g. "film")
+    const topCat = portfolioData.find(c => c.category === category);
+    if (!topCat) return null;
+
+    // 2. Get all sections
+    let sections = topCat.structure;
+
+    // 3. Filter by subcategory path (e.g. "narrative" or "shortform")
+    if (subcategory) {
+      sections = sections.filter(s => s.path === subcategory);
+    }
+
+    if (!sections || sections.length === 0) return null;
+
+    return { title: topCat.category, sections };
+  }, [category, subcategory]);
+
+  if (!activeData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white bg-black">
+        <div className="text-center">
+            <h1 className="text-4xl font-bold mb-4">Category Not Found</h1>
+            <p className="text-neutral-500">The requested category "{subcategory || category}" does not exist.</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="w-full animate-fade-in pb-32">
-      {/* Page Header */}
-      <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-white mb-20 uppercase">
-        {categoryData.label}
-      </h1>
+    <div className="min-h-screen bg-black text-white pt-10 pb-20 px-4 md:px-12 animate-fade-in">
       
-      {/* Render Sections */}
-      <div className="flex flex-col gap-24">
-        {categoryData.structure.map((section, idx) => (
-            <div key={idx}>
-                
-                {/* Section Header (e.g. Narrative) */}
-                {section.header && (
-                    <div className="flex items-center gap-4 mb-10">
-                         <span className="text-red-500 font-mono text-sm uppercase tracking-widest">
-                            [{section.header}]
-                         </span>
-                         <div className="h-px bg-neutral-900 flex-grow"></div>
-                    </div>
-                )}
+      {/* Category Title */}
+      <h1 className="text-5xl md:text-7xl font-bold mb-16 tracking-tighter text-white uppercase">
+        {subcategory ? subcategory : activeData.title}
+      </h1>
 
-                {/* LOGIC: Nested (Short Form) vs Standard (Photography) */}
-                {section.type === 'nested' ? (
-                    <div className="flex flex-col gap-16 pl-0 md:pl-0"> 
-                        {section.subcategories.map((sub, sIdx) => (
-                            <div key={sIdx}>
-                                <h3 className="text-2xl text-white font-bold mb-8 flex items-center gap-3">
-                                  <span className="w-2 h-2 bg-neutral-800 inline-block"></span>
-                                  {sub.title}
-                                </h3>
-                                <Grid items={sub.items} />
+      <div className="flex flex-col gap-24">
+        {activeData.sections.map((section, idx) => (
+          <div key={idx} className="w-full">
+            
+            {/* Show Header if we are NOT already drilled down */}
+            {section.header && !subcategory && (
+                <div className="flex items-center gap-4 mb-10">
+                     <span className="text-neutral-500 font-mono text-sm uppercase tracking-widest">[{section.header}]</span>
+                     <div className="h-px bg-neutral-900 flex-grow"></div>
+                </div>
+            )}
+
+            {section.type === 'nested' ? (
+                <div className="flex flex-col gap-16"> 
+                    {section.subcategories
+                      // Filter for nested path (e.g. "microfilms") if specified in URL
+                      .filter(sub => !nested || sub.path === nested)
+                      .map((sub, sIdx) => (
+                        <div key={sIdx}>
+                            <h3 className="text-xl text-neutral-300 font-light uppercase tracking-widest mb-8 pl-4 border-l border-neutral-700">
+                                {sub.title}
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
+                              {sub.items.map((item, i) => <ProjectCard key={i} item={item} />)}
                             </div>
-                        ))}
-                    </div>
-                ) : (
-                    <Grid items={section.items} />
-                )}
-            </div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
+                  {section.items.map((item, i) => <ProjectCard key={i} item={item} />)}
+                </div>
+            )}
+          </div>
         ))}
       </div>
     </div>
