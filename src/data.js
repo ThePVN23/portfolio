@@ -32,7 +32,7 @@ export const navStructure = [
   { title: "About", path: "about" }
 ];
 
-/* --- 2. GRAPHIC DESIGN DATA (Corrected Paths) --- */
+/* --- 2. GRAPHIC DESIGN DATA --- */
 export const graphicDesignItems = [
   { id: 'gd-1', src: '/assets/Graphic_Design/DIL_CHAHTA_HAI.jpg', title: 'Dil Chahta Hai' },
   { id: 'gd-2', src: '/assets/Graphic_Design/Dussehra (3).jpg', title: 'Dussehra' },
@@ -95,7 +95,7 @@ export const portfolioData = [
         path: "narrative",
         items: [
            {
-             title: "Wrong Order",
+             title: "WRONG ORDER",
              slug: "wrong-order",
              year: "2023",
              thumbnail: "/assets/Wrong_Order_Stills/Screenshot 2026-01-07 231003.png",
@@ -105,10 +105,17 @@ export const portfolioData = [
                "/assets/Wrong_Order_Stills/Screenshot 2026-01-07 231023.png",
                "/assets/Wrong_Order_Stills/Screenshot 2026-01-07 231044.png",
                "/assets/Wrong_Order_Stills/Screenshot 2026-01-07 231113.png"
+             ],
+             credits: [
+               { role: "Directors", name: "PAVAN GADIRAJU, ADAM BEAUMONT" },
+               { role: "Writer", name: "PAVAN GADIRAJU" },
+               { role: "Cast", name: "SARAH DARABADEY, RAYHAN HAFIZ, DANIEL HASKELL, BRETT ARANT" },
+               { role: "Cinematographer", name: "ADAM BEAUMONT" },
+               { role: "Editors", name: "PAVAN GADIRAJU, ADAM BEAUMONT" }
              ]
            },
            {
-             title: "Eulogy",
+             title: "EULOGY",
              slug: "eulogy",
              year: "2024",
              thumbnail: "/assets/Eulogy_Stills/Screenshot 2026-01-07 230703.png",
@@ -119,6 +126,13 @@ export const portfolioData = [
                "/assets/Eulogy_Stills/Screenshot 2026-01-07 230732.png",
                "/assets/Eulogy_Stills/Screenshot 2026-01-07 230749.png",
                "/assets/Eulogy_Stills/Screenshot 2026-01-07 230811.png"
+             ],
+             credits: [
+               { role: "Director", name: "PAVAN GADIRAJU" },
+               { role: "Writers", name: "PAVAN GADIRAJU and MOLEFE SIJIYE" },
+               { role: "Cast", name: "GUTTU ABAJEBEL, BRETT ARANT" },
+               { role: "Cinematographer", name: "PAVAN GADIRAJU" },
+               { role: "Editor", name: "PAVAN GADIRAJU" }
              ]
            }
         ]
@@ -132,7 +146,7 @@ export const portfolioData = [
             path: "microfilms",
             items: [
               { title: "Chai", slug: "chai", videoSrc: "/assets/Microfilm/HinduYUVA_AD.mp4" },
-              { title: "Liminal", slug: "liminal", videoSrc: "/assets/Microfilm/LIMINAL.mp4" },
+              { title: "Beware of Liminal Spaces", slug: "liminal", videoSrc: "/assets/Microfilm/LIMINAL.mp4" },
               { title: "Honeybee", slug: "honeybee", videoSrc: "/assets/Microfilm/Honeybee.mp4" },
               { title: "Schlawgs", slug: "schlawgs", videoSrc: "/assets/Microfilm/Schlawgs.mp4" }
             ]
