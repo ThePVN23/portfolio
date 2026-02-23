@@ -47,7 +47,7 @@ const About = () => {
             </h3>
             <div className="flex flex-col gap-2 items-start font-sans">
               <a 
-                href="https://www.instagram.com/pavangadiraju9/" 
+                href="https://www.instagram.com/doomednightpictures/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-white hover:text-neutral-400 transition-colors text-lg flex items-center gap-2 group"
